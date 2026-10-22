@@ -136,6 +136,10 @@ router.post("/sessions/start", ah(async (req, res) => {
         "SELECT * FROM booking WHERE booking_id = ? AND user_id = ? FOR UPDATE", [bookingId, req.user.user_id]);
       if (!booking) throw new AppError(404, "Booking not found.");
       if (booking.status !== "Booked") throw new AppError(400, `This booking is ${booking.status.toLowerCase()}.`);
+      const [[slot]] = await conn.query(
+        "SELECT slot_start <= NOW() AND NOW() < slot_end AS in_slot FROM booking WHERE booking_id = ?",
+        [booking.booking_id]);
+      if (!slot.in_slot) throw new AppError(400, "Charging can only start during your reserved time slot.");
       chargerId = booking.charger_id;
     }
     if (!chargerId) throw new AppError(400, "Pick a charger.");
