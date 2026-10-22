@@ -15,7 +15,8 @@ app.get("/api/health", async (req, res) => {
     const [[row]] = await pool.query("SELECT DATABASE() AS db, VERSION() AS version, NOW() AS server_time");
     res.json({ ok: true, ...row });
   } catch (err) {
-    res.status(503).json({ ok: false, error: err.message });
+    // Keep raw database errors (which can include usernames and connection details) out of the public response.
+    res.status(503).json({ ok: false, code: err.code || "DATABASE_ERROR" });
   }
 });
 

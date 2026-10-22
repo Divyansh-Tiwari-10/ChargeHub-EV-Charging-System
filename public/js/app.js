@@ -93,16 +93,43 @@ function showLogin() {
 
 async function checkDb() {
   const el = document.getElementById("db-status");
+  const title = el.querySelector(".db-status-title");
+  const detail = el.querySelector(".db-status-detail");
+  const mark = el.querySelector(".db-status-mark");
+  const retry = document.getElementById("db-retry");
+  el.className = "db-status checking";
+  title.textContent = "Checking database connection";
+  detail.textContent = "Connecting to the ChargeHub database.";
+  mark.textContent = "…";
+  retry.hidden = true;
   try {
-    const h = await fetch("/api/health").then((r) => r.json());
-    if (!h.ok) throw new Error(h.error);
+    const response = await fetch("/api/health");
+    const h = await response.json();
+    if (!response.ok || !h.ok) {
+      const messages = {
+        ER_ACCESS_DENIED_ERROR: "MySQL rejected the saved credentials. Update DB_PASSWORD in .env, save it, then restart the server with npm start.",
+        ECONNREFUSED: "MySQL is not running. Start the MySQL service, then try again.",
+        ENOTFOUND: "The MySQL host could not be found. Check DB_HOST in .env.",
+        ER_BAD_DB_ERROR: "The ChargeHub database has not been created yet. After MySQL connects, run npm run setup-db in the project folder.",
+      };
+      const error = new Error(messages[h.code] || "The database could not be reached. Check the MySQL settings in .env.");
+      error.code = h.code;
+      throw error;
+    }
     el.className = "db-status ok";
-    el.textContent = `Connected to MySQL ${h.version.split("-")[0]}, database ${h.db}`;
+    title.textContent = "Database connected";
+    detail.textContent = `MySQL ${h.version.split("-")[0]} · ${h.db}`;
+    mark.textContent = "✓";
   } catch (err) {
     el.className = "db-status bad";
-    el.textContent = `Database not connected: ${err.message}. Check .env and run npm run setup-db.`;
+    title.textContent = err.code === "ER_ACCESS_DENIED_ERROR" ? "MySQL credentials need attention" : "Database not connected";
+    detail.textContent = err.message || "Check the MySQL settings in .env.";
+    mark.textContent = "!";
+    retry.hidden = false;
   }
 }
+
+document.getElementById("db-retry").addEventListener("click", checkDb);
 
 function showPanel(name) {
   document.querySelectorAll("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== name; });

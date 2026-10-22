@@ -15,7 +15,14 @@
       <div class="brand brand-lg"><span class="bolt" aria-hidden="true"></span>ChargeHub</div>
       <h1>Find a free charger, book a slot and pay for every kWh.</h1>
       <p>Stations, chargers, bookings, charging sessions and payments in one MySQL database.</p>
-      <p class="db-status" id="db-status">Checking database connection…</p>
+      <div class="db-status checking" id="db-status" role="status" aria-live="polite">
+        <span class="db-status-mark" aria-hidden="true">…</span>
+        <span class="db-status-copy">
+          <strong class="db-status-title">Checking database connection</strong>
+          <span class="db-status-detail">Connecting to the ChargeHub database.</span>
+        </span>
+        <button class="db-retry" id="db-retry" type="button" hidden>Try again</button>
+      </div>
     </section>
 
     <section class="login-panel">

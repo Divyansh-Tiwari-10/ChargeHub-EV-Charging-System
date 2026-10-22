@@ -105,11 +105,25 @@ textarea { font-family: var(--code); font-size: .875rem; line-height: 1.5; resiz
 }
 .login-intro h1 { font-size: clamp(2rem, 4vw, 3.25rem); max-width: 14ch; }
 .login-intro p { max-width: 46ch; color: var(--ink-soft); font-size: 1.0625rem; }
-.db-status { font-size: .9375rem !important; display: flex; gap: 8px; align-items: center; }
-.db-status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--rule); flex: none; }
-.db-status.ok::before { background: var(--go); }
-.db-status.bad { color: var(--stop) !important; }
-.db-status.bad::before { background: var(--stop); }
+.db-status {
+  display: flex; align-items: flex-start; gap: 12px; width: min(100%, 520px); padding: 14px 16px;
+  border: 1px solid var(--rule); border-radius: var(--radius); background: rgba(255, 255, 255, .78);
+  color: var(--ink-soft); font-size: .9375rem;
+}
+.db-status-mark {
+  display: grid; place-items: center; width: 22px; height: 22px; flex: none; margin-top: 1px;
+  border-radius: 50%; background: var(--rule-soft); color: var(--ink-soft); font-size: .8125rem; font-weight: 600;
+}
+.db-status-copy { display: grid; gap: 2px; min-width: 0; }
+.db-status-title { color: var(--ink); font-size: .9375rem; font-weight: 600; }
+.db-status-detail { overflow-wrap: anywhere; line-height: 1.45; }
+.db-status.ok { border-color: #B7DEC5; background: var(--go-soft); }
+.db-status.ok .db-status-mark { background: var(--go); color: #fff; }
+.db-status.bad { border-color: #E8B8B4; background: var(--stop-soft); }
+.db-status.bad .db-status-mark { background: var(--stop); color: #fff; }
+.db-retry { align-self: center; margin-left: auto; border: 0; background: transparent; color: var(--current); font: inherit; font-size: .875rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.db-retry:hover { text-decoration: underline; text-underline-offset: 3px; }
+.db-retry:focus-visible { border-radius: 3px; }
 .login-panel { background: var(--surface); padding: 64px clamp(24px, 5vw, 72px); display: flex; flex-direction: column; justify-content: center; gap: 24px; }
 .login-panel form { max-width: 380px; width: 100%; }
 .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--rule); max-width: 380px; }
