@@ -1,0 +1,26 @@
+{
+  "name": "chargehub-ev-charging-system",
+  "version": "1.0.0",
+  "description": "ChargeHub: EV charging management system. DBMS mini project with Node.js, Express and MySQL.",
+  "main": "server.js",
+  "scripts": {
+    "setup-db": "node scripts/setup-db.js",
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["dbms", "mysql", "express", "ev-charging"],
+  "contributors": [
+    "Divyansh Tiwari (2025800129)",
+    "Shreyas Trimbakkar (2025800130)",
+    "Krishana Tupe (2025800131)"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "mysql2": "^3.11.0"
+  }
+}
